@@ -2,11 +2,11 @@ module.exports = {
   root: true,
   env: {
     browser: true,
-    node: true
+    node: true,
   },
   parserOptions: {
     parser: '@babel/eslint-parser',
-    requireConfigFile: false
+    requireConfigFile: false,
   },
   extends: ['@nuxtjs', 'plugin:nuxt/recommended', 'prettier'],
   plugins: [],
@@ -15,11 +15,8 @@ module.exports = {
     'vue/valid-v-slot': [
       'error',
       {
-        allowModifiers: true
-      }
+        allowModifiers: true,
+      },
     ],
-    parserOptions: {
-      parser: 'babel-eslint'
-    }
-  }
+  },
 }

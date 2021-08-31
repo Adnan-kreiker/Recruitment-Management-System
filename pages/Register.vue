@@ -15,6 +15,7 @@
               label="Name"
               prepend-icon="mdi-account"
               required
+              color="secondary"
             ></v-text-field>
           </validation-provider>
           <validation-provider
@@ -32,6 +33,7 @@
               label="Phone Number"
               required
               prepend-icon="mdi-phone"
+              color="secondary"
             ></v-text-field>
           </validation-provider>
           <validation-provider
@@ -44,6 +46,7 @@
               :error-messages="errors"
               label="E-mail"
               required
+              color="secondary"
               prepend-icon="mdi-email"
             ></v-text-field>
           </validation-provider>
@@ -56,6 +59,7 @@
               :error-messages="errors"
               label="Password "
               type="password"
+              color="secondary"
               prepend-icon="mdi-key"
             >
             </v-text-field>
@@ -71,6 +75,7 @@
               label="Confirmation"
               required
               type="password"
+              color="secondary"
               prepend-icon="mdi-lock"
             >
             </v-text-field>
@@ -86,6 +91,7 @@
               value="1"
               label="Agree to our TOS"
               type="checkbox"
+              color="secondary"
               required
             ></v-checkbox>
           </validation-provider>

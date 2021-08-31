@@ -14,6 +14,7 @@
               :error-messages="errors"
               label="Name"
               required
+              color="secondary"
               prepend-icon="mdi-account"
             ></v-text-field>
           </validation-provider>
@@ -27,6 +28,7 @@
               :error-messages="errors"
               label="E-mail"
               required
+              color="secondary"
               prepend-icon="mdi-email"
             ></v-text-field>
           </validation-provider>
@@ -40,6 +42,7 @@
               label="Password "
               type="password"
               prepend-icon="mdi-lock"
+              color="secondary"
             >
             </v-text-field>
           </validation-provider>
