@@ -86,6 +86,15 @@
         </v-dialog>
       </v-toolbar>
     </template>
+    <template #[`item.status`]="{ item }">
+      <v-chip
+        small
+        :color="statusColor[item.status]"
+        class="font-weight-medium"
+      >
+        {{ item.status }}
+      </v-chip>
+    </template>
     <template #[`item.actions`]="{ item }">
       <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon
       ><v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
@@ -99,6 +108,12 @@
 <script>
 export default {
   data: () => ({
+    statusColor: {
+      Accepted: 'success',
+      Rejected: 'error',
+      Created: 'warning',
+      Completed: 'info'
+    },
     dialog: false,
     dialogDelete: false,
     applicationStatus: ['Created', 'Completed', 'Accepted', 'Rejected'],
@@ -116,6 +131,13 @@ export default {
       { text: 'Status', value: 'status' },
       { text: 'Actions', value: 'actions', sortable: false }
     ],
+    status: {
+      1: 'Current',
+      2: 'Professional',
+      3: 'Rejected',
+      4: 'Resigned',
+      5: 'Applied'
+    },
     applicants: [],
     editedIndex: -1,
     editedItem: {
@@ -163,6 +185,7 @@ export default {
       val || this.closeDelete()
     }
   },
+  created() {},
 
   methods: {
     editItem(item) {

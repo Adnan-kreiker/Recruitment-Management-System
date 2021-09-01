@@ -5,9 +5,9 @@
         Please fill your application name...</v-card-title
       >
       <validation-observer ref="observer" v-slot="{ invalid }">
-        <form @submit.prevent="submit">
+        <form @submit.prevent="addApplication">
           <v-row>
-            <v-col cols="12" sm="6" class="pl-8">
+            <v-col cols="12" sm="6" class="px-8">
               <validation-provider
                 v-slot="{ errors }"
                 name="Name"
@@ -23,7 +23,7 @@
                 ></v-text-field>
               </validation-provider>
             </v-col>
-            <v-col cols="12" sm="6" class="pr-8">
+            <v-col cols="12" sm="6" class="px-8">
               <validation-provider
                 v-slot="{ errors }"
                 name="phoneNumber"
@@ -57,38 +57,10 @@
                 ></v-text-field>
               </validation-provider>
             </v-col>
-            <!-- <v-col cols="12" sm="6">
-          <v-text-field
-            v-model="firstName"
-            color="purple darken-2"
-            label="Name"
-            required
-            class="px-4"
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" sm="6">
-          <v-text-field
-            v-model="email"
-            color="purple darken-2"
-            label="Email"
-            required
-            type="email"
-            class="px-4"
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" sm="6">
-          <v-text-field
-            v-model="number"
-            color="blue darken-2"
-            label="Phone number"
-            required
-            type="number"
-            class="px-4"
-          ></v-text-field>
-        </v-col> -->
             <v-col cols="12" sm="6" class="py-0">
               <v-card-text>Choose your specialty</v-card-text>
               <v-select
+                v-model="specialty"
                 class="px-4"
                 :items="majors"
                 label="Your specialty"
@@ -99,6 +71,7 @@
             <v-col cols="12" class="py-0">
               <v-card-text class="pt-0">Upload your resume</v-card-text>
               <v-file-input
+                v-model="file"
                 label="Upload your CV"
                 append-icon="mdi-file"
                 prepend-icon
@@ -110,7 +83,7 @@
             <v-col cols="12" class="py-0">
               <v-card-text class="py-0">Add your skills</v-card-text>
               <v-combobox
-                v-model="model"
+                v-model="skills"
                 :filter="filter"
                 :hide-no-data="!search"
                 :items="items"
@@ -174,6 +147,7 @@
     </v-card>
   </v-container>
 </template>
+
 <script>
 import { required, digits, email, max, min } from 'vee-validate/dist/rules'
 import {
@@ -229,7 +203,8 @@ export default {
     name: '',
     email: '',
     phoneNumber: '',
-    // colors: ['silver'],
+    specialty: '',
+    file: null,
     editing: null,
     editingIndex: -1,
     items: [
@@ -252,7 +227,7 @@ export default {
     ],
     nonce: 1,
     menu: false,
-    model: [],
+    skills: [],
     x: 0,
     search: null,
     y: 0
@@ -280,6 +255,18 @@ export default {
   },
 
   methods: {
+    addApplication() {
+      const formOutPut = {
+        name: this.name,
+        email: this.email,
+        phoneNumber: this.phoneNumber,
+        speciality: this.specialty,
+        skills: this.skills,
+        file: this.file
+      }
+      this.$store.commit('addApplicant', formOutPut)
+    },
+
     filter(item, queryText, itemText) {
       if (item.header) return false
 
@@ -293,9 +280,6 @@ export default {
         -1
       )
     },
-    submit() {
-      this.$refs.observer.validate()
-    },
     clear() {
       this.name = ''
       this.phoneNumber = ''
@@ -306,3 +290,5 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped></style>
