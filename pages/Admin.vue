@@ -4,6 +4,9 @@
     :items="applicants"
     sort-by="id"
     class="elevation-1"
+    :items-per-page="5"
+    :loading="!applicants.length"
+    loading-text="Loading... Please wait"
   >
     <template #top>
       <v-toolbar flat>
@@ -11,11 +14,6 @@
         <v-divider class="mx-4" inset vertical></v-divider>
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="500px">
-          <template #[`activator`]="{ on, attrs }">
-            <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
-              New Applicant
-            </v-btn>
-          </template>
           <v-card>
             <v-card-title>
               <span class="text-h5">{{ formTitle }}</span>
@@ -36,12 +34,7 @@
                       label="Email"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.address.city"
-                      label="City"
-                    ></v-text-field>
-                  </v-col>
+
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
                       v-model="editedItem.phone"
@@ -100,12 +93,15 @@
       ><v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
     </template>
     <template #no-data>
-      <v-btn color="primary" @click="$fetch"> Reset </v-btn>
+      <!-- <v-btn color="primary" @click="$fetch"> Reset </v-btn> -->
     </template>
   </v-data-table>
 </template>
 
 <script>
+// import { mapState } from 'vuex'
+import { mapMultiRowFields } from 'vuex-map-fields'
+
 export default {
   data: () => ({
     statusColor: {
@@ -126,7 +122,6 @@ export default {
       },
       { text: 'Name', value: 'name' },
       { text: 'Email', value: 'email' },
-      { text: 'City', value: 'address.city' },
       { text: 'Phone', value: 'phone' },
       { text: 'Status', value: 'status' },
       { text: 'Actions', value: 'actions', sortable: false }
@@ -138,15 +133,12 @@ export default {
       4: 'Resigned',
       5: 'Applied'
     },
-    applicants: [],
+    // applicants: [],
     editedIndex: -1,
     editedItem: {
       id: '',
       name: '',
       email: '',
-      address: {
-        city: ''
-      },
       phone: '',
       status: ''
     },
@@ -154,28 +146,26 @@ export default {
       id: '',
       name: '',
       email: '',
-      address: {
-        city: ''
-      },
       phone: '',
       status: ''
-    }
+    },
+    item: ''
   }),
-
-  async fetch() {
-    this.applicants = await fetch('https://fakejsonapi.com/users').then((res) =>
-      res.json()
-    )
-    for (let i = 0; i < this.applicants.length; i++) {
-      this.applicants[i].status = 'Created'
-    }
-    console.log(this.applicants)
-  },
+  // async fetch() {
+  //   this.applicants = await fetch('https://fakejsonapi.com/users').then((res) =>
+  //     res.json()
+  //   )
+  //   for (let i = 0; i < this.applicants.length; i++) {
+  //     this.applicants[i].status = 'Created'
+  //   }
+  //   console.log(this.applicants)
+  // },
 
   computed: {
     formTitle() {
       return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
-    }
+    },
+    ...mapMultiRowFields(['applicants'])
   },
   watch: {
     dialog(val) {
@@ -185,23 +175,33 @@ export default {
       val || this.closeDelete()
     }
   },
-  created() {},
+  created() {
+    this.$store.dispatch('getApplicants')
+  },
 
   methods: {
     editItem(item) {
+      console.log(item)
+      console.log(this.item)
+      this.item = item
       this.editedIndex = this.applicants.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
     },
 
     deleteItem(item) {
+      this.item = item
       this.editedIndex = this.applicants.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialogDelete = true
     },
 
     deleteItemConfirm() {
-      this.applicants.splice(this.editedIndex, 1)
+      // this.applicants.splice(this.editedIndex, 1)
+      this.$store.commit('deleteItem', this.item)
+      console.log('commited')
+      console.log(this.item)
+      // this.applicants.filter((i) => i.id !== this.item.id)
       this.closeDelete()
     },
 

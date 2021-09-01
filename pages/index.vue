@@ -11,11 +11,11 @@
               <validation-provider
                 v-slot="{ errors }"
                 name="Name"
-                rules="required|max:10"
+                rules="required|max:20"
               >
                 <v-text-field
                   v-model="name"
-                  :counter="10"
+                  :counter="20"
                   :error-messages="errors"
                   label="Name"
                   required
@@ -28,13 +28,11 @@
                 v-slot="{ errors }"
                 name="phoneNumber"
                 :rules="{
-                  required: true,
-                  min: 7
+                  required: true
                 }"
               >
                 <v-text-field
                   v-model="phoneNumber"
-                  :counter="7"
                   :error-messages="errors"
                   label="Phone Number"
                   required
@@ -149,7 +147,7 @@
 </template>
 
 <script>
-import { required, digits, email, max, min } from 'vee-validate/dist/rules'
+import { required, email, max, min } from 'vee-validate/dist/rules'
 import {
   extend,
   ValidationObserver,
@@ -158,11 +156,6 @@ import {
 } from 'vee-validate'
 
 setInteractionMode('eager')
-
-extend('digits', {
-  ...digits,
-  message: '{_field_} needs to be {length} digits. ({_value_})'
-})
 
 extend('required', {
   ...required,
@@ -259,7 +252,7 @@ export default {
       const formOutPut = {
         name: this.name,
         email: this.email,
-        phoneNumber: this.phoneNumber,
+        phone: this.phoneNumber,
         speciality: this.specialty,
         skills: this.skills,
         file: this.file
