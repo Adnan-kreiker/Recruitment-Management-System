@@ -4,14 +4,14 @@
       <v-btn
         text
         :class="login ? 'activeBtn' : ''"
-        @click=";[(currentComponent = 'Login'), (login = !login)]"
+        @click=";[(currentComponent = 'Login'), (login = true)]"
         >login</v-btn
       >
       <v-btn
         text
         :class="!login ? 'activeBtn' : ''"
         exact-active-class="green"
-        @click=";[(currentComponent = 'Register'), (login = !login)]"
+        @click=";[(currentComponent = 'Register'), (login = false)]"
         >Register</v-btn
       >
     </div>
@@ -33,5 +33,14 @@ export default {
 <style lang="scss" scoped>
 .activeBtn {
   background: #41b883;
+}
+.component-fade-enter-active,
+.component-fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.component-fade-enter-from,
+.component-fade-leave-to {
+  opacity: 0;
 }
 </style>

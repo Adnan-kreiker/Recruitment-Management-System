@@ -3,7 +3,10 @@ import { getField, updateField } from 'vuex-map-fields'
 export const state = () => ({
   applicants: [],
   id: 10,
-  user: null
+  user: null,
+  snackbar: false,
+  snackbarText: ''
+  // timeout: 4000
 })
 
 export const getters = {
@@ -34,6 +37,15 @@ export const mutations = {
   },
   SET_USER(state, user) {
     state.user = user
+  },
+  SHOW_SNACKBAR(state, text) {
+    state.snackbar = true
+    state.snackbarText = text
+    // state.timeout = 4000
+  },
+  HIDE_SNACKBAR(state) {
+    state.snackbar = false
+    state.snackbarText = null
   }
 }
 
@@ -67,6 +79,11 @@ export const actions = {
         })
     } catch (error) {
       console.log(error)
+      commit('SHOW_SNACKBAR', error)
+      setTimeout(() => {
+        commit('HIDE_SNACKBAR')
+      }, 4000)
+      clearTimeout()
     }
   },
   init_login({ commit }) {
@@ -81,47 +98,72 @@ export const actions = {
     }
   },
   async login({ commit }, payload) {
-    await this.$fire.auth.signInWithEmailAndPassword(
-      payload.email,
-      payload.password
-    )
+    try {
+      await this.$fire.auth.signInWithEmailAndPassword(
+        payload.email,
+        payload.password
+      )
+      const { displayName, email } = this.$fire.auth.currentUser
 
-    const { displayName, email } = this.$fire.auth.currentUser
-
-    commit('SET_USER', {
-      displayName,
-      email
-    })
-    this.$router.push('/')
+      commit('SET_USER', {
+        displayName,
+        email
+      })
+      this.$router.push('/')
+    } catch (error) {
+      console.log(error)
+      commit('SHOW_SNACKBAR', error)
+      setTimeout(() => {
+        commit('HIDE_SNACKBAR')
+      }, 4000)
+      clearTimeout()
+    }
   },
   async register({ commit }, payload) {
     const userCred = await this.$fire.auth.createUserWithEmailAndPassword(
       payload.email,
       payload.password
     )
+    try {
+      await this.$fire.firestore
+        .collection('users')
+        .doc(userCred.user.uid)
+        .set({
+          name: payload.name,
+          email: payload.email,
+          phone: payload.phone
+        })
 
-    await this.$fire.firestore.collection('users').doc(userCred.user.uid).set({
-      name: payload.name,
-      email: payload.email,
-      phone: payload.phone
-    })
+      await userCred.user.updateProfile({
+        displayName: payload.name,
+        phoneNumber: payload.phone
+      })
+      const { displayName, email } = this.$fire.auth.currentUser
 
-    await userCred.user.updateProfile({
-      displayName: payload.name,
-      phoneNumber: payload.phone
-    })
-
-    const { displayName, email } = this.$fire.auth.currentUser
-
-    commit('SET_USER', {
-      displayName,
-      email
-    })
-    this.$router.push('/')
+      commit('SET_USER', {
+        displayName,
+        email
+      })
+      this.$router.push('/')
+    } catch (error) {
+      commit('SHOW_SNACKBAR', error)
+      setTimeout(() => {
+        commit('HIDE_SNACKBAR')
+      }, 4000)
+      clearTimeout()
+    }
   },
   async signout({ commit }) {
-    await this.$fire.auth.signOut()
-    commit('SET_USER', null)
-    this.$router.push('/auth')
+    try {
+      await this.$fire.auth.signOut()
+      commit('SET_USER', null)
+      this.$router.push('/auth')
+    } catch (error) {
+      commit('SHOW_SNACKBAR', error)
+      setTimeout(() => {
+        commit('HIDE_SNACKBAR')
+      }, 4000)
+      clearTimeout()
+    }
   }
 }

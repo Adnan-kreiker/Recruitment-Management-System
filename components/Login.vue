@@ -1,52 +1,54 @@
 <template>
-  <validation-observer ref="observer" v-slot="{ invalid }">
-    <v-container>
-      <v-card max-width="500" class="pa-5 mx-auto">
-        <form @submit.prevent="submit">
-          <validation-provider
-            v-slot="{ errors }"
-            name="email"
-            rules="required|email"
-          >
-            <v-text-field
-              v-model="email"
-              :error-messages="errors"
-              label="E-mail"
-              required
-              color="secondary"
-              prepend-icon="mdi-email"
-            ></v-text-field>
-          </validation-provider>
-          <validation-provider
-            v-slot="{ errors }"
-            name="password"
-            rules="required"
-          >
-            <v-text-field
-              v-model="password"
-              :error-messages="errors"
-              label="Password "
-              type="password"
-              prepend-icon="mdi-lock"
-              color="secondary"
+  <div>
+    <validation-observer ref="observer" v-slot="{ invalid }">
+      <v-container>
+        <v-card max-width="500" class="pa-5 mx-auto">
+          <form @submit.prevent="submit">
+            <validation-provider
+              v-slot="{ errors }"
+              name="email"
+              rules="required|email"
             >
-            </v-text-field>
-          </validation-provider>
-          <v-btn
-            class="mr-4"
-            type="submit"
-            :disabled="invalid"
-            color="primary"
-            :loading="loading"
-            @click="loader = 'loading'"
-          >
-            submit
-          </v-btn>
-          <v-btn color="secondary" outlined @click="clear"> clear </v-btn>
-        </form>
-      </v-card>
-    </v-container>
-  </validation-observer>
+              <v-text-field
+                v-model="email"
+                :error-messages="errors"
+                label="E-mail"
+                required
+                color="secondary"
+                prepend-icon="mdi-email"
+              ></v-text-field>
+            </validation-provider>
+            <validation-provider
+              v-slot="{ errors }"
+              name="password"
+              rules="required"
+            >
+              <v-text-field
+                v-model="password"
+                :error-messages="errors"
+                label="Password "
+                type="password"
+                prepend-icon="mdi-lock"
+                color="secondary"
+              >
+              </v-text-field>
+            </validation-provider>
+            <v-btn
+              class="mr-4"
+              type="submit"
+              :disabled="invalid"
+              color="primary"
+              :loading="loading"
+              @click="loader = 'loading'"
+            >
+              submit
+            </v-btn>
+            <v-btn color="secondary" outlined @click="clear"> clear </v-btn>
+          </form>
+        </v-card>
+      </v-container>
+    </validation-observer>
+  </div>
 </template>
 
 <script>

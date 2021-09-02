@@ -51,11 +51,21 @@
       ></v-switch>
     </v-app-bar>
     <v-main>
+      <v-snackbar
+        v-model="snackbar"
+        transition="fade-transition"
+        absolute
+        bottom
+        center
+        color="blue"
+        class="white--text"
+      >
+        {{ snackbarText }}
+      </v-snackbar>
       <v-container>
         <Nuxt />
       </v-container>
     </v-main>
-
     <v-footer :absolute="!fixed" app color="primary">
       <span>&copy; {{ new Date().getFullYear() }}</span>
     </v-footer>
@@ -64,7 +74,6 @@
 
 <script>
 import { mapState } from 'vuex'
-
 export default {
   data() {
     return {
@@ -88,7 +97,15 @@ export default {
     }
   },
   computed: {
-    ...mapState(['user'])
+    ...mapState(['user', 'snackbarText']),
+    snackbar: {
+      get() {
+        return this.$store.state.snackbar
+      },
+      set(v) {
+        this.$store.commit('SHOW_SNACKBAR', v)
+      }
+    }
   },
   methods: {
     toggleTheme() {

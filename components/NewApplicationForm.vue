@@ -1,8 +1,15 @@
 <template>
   <v-container>
-    <v-card max-width="700" elevation="12" shaped class="mx-auto pa-8">
+    <v-card outlined max-width="600" elevation="12" shaped class="mx-auto pa-8">
       <v-card-title
-        class="py-8 px-4 text-h5 silver--text justify-center font-weight-medium"
+        class="
+          py-8
+          px-4
+          text-h5
+          secondary--text
+          justify-center
+          font-weight-medium
+        "
       >
         Please fill your application</v-card-title
       >

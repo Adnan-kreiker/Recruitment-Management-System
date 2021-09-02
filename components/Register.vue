@@ -241,4 +241,7 @@ export default {
     transform: rotate(360deg);
   }
 }
+.activeBtn {
+  background: #41b883;
+}
 </style>
