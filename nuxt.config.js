@@ -40,7 +40,24 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    [
+      '@nuxtjs/firebase',
+      {
+        config: {
+          apiKey: 'AIzaSyDNoj4d-tX1CGqac-0eQT6tj6WXUFkHBvc',
+          authDomain: 'rrecruitment-ms.firebaseapp.com',
+          projectId: 'rrecruitment-ms',
+          storageBucket: 'rrecruitment-ms.appspot.com',
+          messagingSenderId: '534369309882',
+          appId: '1:534369309882:web:3d28e55aeb266d751c5e83'
+        },
+        services: {
+          auth: true,
+          functions: true
+        }
+      }
+    ]
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -73,5 +90,16 @@ export default {
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {}
+  build: {},
+  auth: {
+    persistence: 'local', // default
+    initialize: {
+      onAuthStateChangedMutation: 'ON_AUTH_STATE_CHANGED_MUTATION',
+      onAuthStateChangedAction: 'onAuthStateChangedAction',
+      subscribeManually: false
+    },
+    ssr: false, // default
+    emulatorPort: 9099,
+    emulatorHost: 'http://localhost'
+  }
 }

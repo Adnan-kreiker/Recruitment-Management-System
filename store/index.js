@@ -1,7 +1,9 @@
 import { getField, updateField } from 'vuex-map-fields'
 
 export const state = () => ({
-  applicants: []
+  applicants: [],
+  id: 10,
+  userLoggedIn: false
 })
 
 export const getters = {
@@ -13,6 +15,9 @@ export const getters = {
 
 export const mutations = {
   addApplicant: (state, formOutPut) => {
+    state.id += 1
+    formOutPut.id = state.id
+    formOutPut.status = 'Created'
     state.applicants.push(formOutPut)
     console.log(formOutPut)
   },
@@ -23,12 +28,10 @@ export const mutations = {
   updateField,
   deleteItem: (state, payload) => {
     state.applicants = state.applicants.filter((item) => item.id !== payload.id)
+  },
+  toggleLogin: (state) => {
+    state.userLoggedIn = !state.userLoggedIn
   }
-  // editItem: (state, item) => {
-  //   const { id } = item
-  //   state.editedIndex = state.applicants.indexOf(id)
-  //   state.editedItem = Object.assign({}, item)
-  // }
 }
 
 export const actions = {

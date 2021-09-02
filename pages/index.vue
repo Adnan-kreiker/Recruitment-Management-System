@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-card max-width="700" elevation="12" shaped class="mx-auto">
-      <v-card-title class="">
+      <v-card-title class="py-8 px-4 text-h5 gray--text">
         Please fill your application name...</v-card-title
       >
       <validation-observer ref="observer" v-slot="{ invalid }">
@@ -15,10 +15,10 @@
               >
                 <v-text-field
                   v-model="name"
-                  :counter="20"
                   :error-messages="errors"
                   label="Name"
                   required
+                  solo
                   color="secondary"
                 ></v-text-field>
               </validation-provider>
@@ -33,6 +33,7 @@
               >
                 <v-text-field
                   v-model="phoneNumber"
+                  solo
                   :error-messages="errors"
                   label="Phone Number"
                   required
@@ -40,7 +41,7 @@
                 ></v-text-field>
               </validation-provider>
             </v-col>
-            <v-col class="pl-8" cols="12" sm="6">
+            <v-col class="px-8" cols="12" sm="6">
               <validation-provider
                 v-slot="{ errors }"
                 name="email"
@@ -48,6 +49,7 @@
               >
                 <v-text-field
                   v-model="email"
+                  solo
                   :error-messages="errors"
                   label="E-mail"
                   required
@@ -56,30 +58,34 @@
               </validation-provider>
             </v-col>
             <v-col cols="12" sm="6" class="py-0">
-              <v-card-text>Choose your specialty</v-card-text>
+              <v-card-text class="text-body-1"
+                >Choose your specialty</v-card-text
+              >
               <v-select
                 v-model="specialty"
                 class="px-4"
                 :items="majors"
                 label="Your specialty"
-                dense
                 solo
               ></v-select>
             </v-col>
             <v-col cols="12" class="py-0">
-              <v-card-text class="pt-0">Upload your resume</v-card-text>
+              <v-card-text class="pt-0 text-body-1"
+                >Upload your resume</v-card-text
+              >
               <v-file-input
                 v-model="file"
                 label="Upload your CV"
                 append-icon="mdi-file"
                 prepend-icon
                 class="px-4"
-                dense
                 solo
               ></v-file-input>
             </v-col>
             <v-col cols="12" class="py-0">
-              <v-card-text class="py-0">Add your skills</v-card-text>
+              <v-card-text class="py-0 text-body-1"
+                >Add your skills</v-card-text
+              >
               <v-combobox
                 v-model="skills"
                 :filter="filter"
@@ -91,7 +97,6 @@
                 multiple
                 small-chips
                 solo
-                dense
                 class="pa-4"
               >
                 <template #no-data>
