@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app class="gray">
     <v-navigation-drawer
       v-model="drawer"
       :mini-variant="miniVariant"
@@ -31,8 +31,12 @@
       <v-app-bar-nav-icon class="white--text" @click.stop="drawer = !drawer" />
       <v-toolbar-title class="white--text" v-text="title" />
       <v-spacer></v-spacer>
-      <v-btn text to="/login" color="white">Login</v-btn>
-      <v-btn text to="/register" color="white">Register</v-btn>
+      <div v-if="!user">
+        <v-btn text to="/auth" color="white">Login / Register</v-btn>
+      </div>
+      <v-btn v-else text to="/login" color="white" @click="handleSignOut"
+        >Sign out</v-btn
+      >
       <v-switch
         text
         color="white"
@@ -59,6 +63,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   data() {
     return {
@@ -81,9 +87,15 @@ export default {
       title: 'Recruitment Management System'
     }
   },
+  computed: {
+    ...mapState(['user'])
+  },
   methods: {
     toggleTheme() {
       this.$vuetify.theme.dark = !this.$vuetify.theme.dark
+    },
+    handleSignOut() {
+      this.$store.dispatch('signout')
     }
   }
 }

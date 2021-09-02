@@ -6,11 +6,11 @@
           <validation-provider
             v-slot="{ errors }"
             name="Name"
-            rules="required|max:10"
+            rules="required|max:30"
           >
             <v-text-field
               v-model="name"
-              :counter="10"
+              :counter="30"
               :error-messages="errors"
               label="Name"
               prepend-icon="mdi-account"
@@ -20,15 +20,14 @@
           </validation-provider>
           <validation-provider
             v-slot="{ errors }"
-            name="phoneNumber"
+            name="phone"
             :rules="{
               required: true,
               min: 7
             }"
           >
             <v-text-field
-              v-model="phoneNumber"
-              :counter="7"
+              v-model="phone"
               :error-messages="errors"
               label="Phone Number"
               required
@@ -53,6 +52,7 @@
           <validation-provider
             v-slot="{ errors }"
             rules="required|password:@confirm"
+            name="password"
           >
             <v-text-field
               v-model="password"
@@ -95,8 +95,17 @@
               required
             ></v-checkbox>
           </validation-provider>
-          <v-btn class="mr-4" type="submit" :disabled="invalid"> submit </v-btn>
-          <v-btn @click="clear"> clear </v-btn>
+          <v-btn
+            class="mr-4"
+            :loading="loading"
+            type="submit"
+            :disabled="invalid"
+            color="primary"
+            @click="loader = 'loading'"
+          >
+            submit
+          </v-btn>
+          <v-btn color="secondary" outlined @click="clear"> clear </v-btn>
         </form>
       </v-card>
     </v-container>
@@ -153,24 +162,83 @@ export default {
   },
   data: () => ({
     name: '',
-    phoneNumber: '',
+    phone: '',
     email: '',
     password: '',
     confirmation: '',
-    checkbox: null
+    checkbox: null,
+    loader: null,
+    loading: false
   }),
+  watch: {
+    loader() {
+      const l = this.loader
+      this[l] = !this[l]
 
+      setTimeout(() => (this[l] = false), 3000)
+
+      this.loader = null
+    }
+  },
   methods: {
     submit() {
       this.$refs.observer.validate()
+      const payload = {
+        name: this.name,
+        phone: this.phone,
+        email: this.email,
+        password: this.password
+      }
+      this.$store.dispatch('register', payload)
     },
     clear() {
       this.name = ''
-      this.phoneNumber = ''
+      this.phone = ''
       this.email = ''
+      this.password = ''
+      this.confirmation = ''
       this.checkbox = null
       this.$refs.observer.reset()
     }
   }
 }
 </script>
+
+<style>
+.custom-loader {
+  animation: loader 1s infinite;
+  display: flex;
+}
+@-moz-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-o-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+</style>

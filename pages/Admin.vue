@@ -1,19 +1,40 @@
 <template>
   <v-card elevation="12">
+    <v-row>
+      <v-col>
+        </v-card-title>
+                <v-text-field
+              v-model="search"
+              label="Search"
+              class="px-4"
+            ></v-text-field>
+      </v-col>
+      <v-col>
+        <v-select
+            v-model="selectedStatus"
+            :items="selectStatus"          
+            label="Filter by Status"
+              class="px-4"
+
+          ></v-select>
+      </v-col>
+    </v-row>
     <v-data-table
       :headers="headers"
       :items="applicants"
+      item-key="name"
       sort-by="id"
       class="elevation-1"
       :items-per-page="5"
+      :search="search"
       :loading="!applicants.length"
       loading-text="Loading... Please wait"
     >
       <template #top>
-        <v-toolbar flat>
-          <v-toolbar-title>Applicants</v-toolbar-title>
+        <v-toolbar height="10" flat>
+          <!-- <v-toolbar-title>Applicants</v-toolbar-title> -->
           <v-divider class="mx-4" inset vertical></v-divider>
-          <v-spacer></v-spacer>
+           <v-spacer></v-spacer>
           <v-dialog v-model="dialog" max-width="500px">
             <v-card>
               <v-card-title>
@@ -93,15 +114,11 @@
         <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon
         ><v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
       </template>
-      <template #no-data>
-        <!-- <v-btn color="primary" @click="$fetch"> Reset </v-btn> -->
-      </template>
     </v-data-table>
   </v-card>
 </template>
 
 <script>
-// import { mapState } from 'vuex'
 import { mapMultiRowFields } from 'vuex-map-fields'
 
 export default {
@@ -113,29 +130,11 @@ export default {
       Completed: 'info'
     },
     dialog: false,
+    search: '',
+    selectedStatus: 'All',
     dialogDelete: false,
     applicationStatus: ['Created', 'Completed', 'Accepted', 'Rejected'],
-    headers: [
-      {
-        text: 'Id',
-        align: 'start',
-        sortable: true,
-        value: 'id'
-      },
-      { text: 'Name', value: 'name' },
-      { text: 'Email', value: 'email' },
-      { text: 'Phone', value: 'phone' },
-      { text: 'Status', value: 'status' },
-      { text: 'Actions', value: 'actions', sortable: false }
-    ],
-    status: {
-      1: 'Current',
-      2: 'Professional',
-      3: 'Rejected',
-      4: 'Resigned',
-      5: 'Applied'
-    },
-    // applicants: [],
+    selectStatus: [ 'All', 'Created', 'Completed', 'Accepted', 'Rejected'],
     editedIndex: -1,
     editedItem: {
       id: '',
@@ -153,17 +152,30 @@ export default {
     },
     item: ''
   }),
-  // async fetch() {
-  //   this.applicants = await fetch('https://fakejsonapi.com/users').then((res) =>
-  //     res.json()
-  //   )
-  //   for (let i = 0; i < this.applicants.length; i++) {
-  //     this.applicants[i].status = 'Created'
-  //   }
-  //   console.log(this.applicants)
-  // },
-
   computed: {
+        headers() {
+          return [
+      {
+        text: 'Id',
+        align: 'start',
+        sortable: true,
+        value: 'id',
+        filterable: true
+      },
+      { text: 'Name', value: 'name' },
+      { text: 'Email', value: 'email' },
+      { text: 'Phone', value: 'phone' },
+      { text: 'Status', value: 'status', filter: value => {
+        if (!this.selectedStatus) {
+          return true;
+        }
+        if (this.selectedStatus === 'All') {
+          return true;
+        }
+        return value === this.selectedStatus
+      } },
+      { text: 'Actions', value: 'actions', sortable: false }
+    ]},
     formTitle() {
       return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
     },
@@ -183,9 +195,7 @@ export default {
 
   methods: {
     editItem(item) {
-      console.log(item)
-      console.log(this.item)
-      this.item = item
+      this.item = item // this refers to the item we clicked on
       this.editedIndex = this.applicants.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
@@ -201,8 +211,6 @@ export default {
     deleteItemConfirm() {
       // this.applicants.splice(this.editedIndex, 1)
       this.$store.commit('deleteItem', this.item)
-      console.log('commited')
-      console.log(this.item)
       // this.applicants.filter((i) => i.id !== this.item.id)
       this.closeDelete()
     },
@@ -230,7 +238,13 @@ export default {
         this.applicants.push(this.editedItem)
       }
       this.close()
-    }
+    },
+    statusFilter (value) {
+                if (!this.selectedStatus) {
+          return true;
+        }
+        return value === this.selectedStatus
+      }
   }
 }
 </script>

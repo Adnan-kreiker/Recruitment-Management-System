@@ -5,21 +5,6 @@
         <form @submit.prevent="submit">
           <validation-provider
             v-slot="{ errors }"
-            name="Name"
-            rules="required|max:10"
-          >
-            <v-text-field
-              v-model="name"
-              :counter="10"
-              :error-messages="errors"
-              label="Name"
-              required
-              color="secondary"
-              prepend-icon="mdi-account"
-            ></v-text-field>
-          </validation-provider>
-          <validation-provider
-            v-slot="{ errors }"
             name="email"
             rules="required|email"
           >
@@ -34,7 +19,8 @@
           </validation-provider>
           <validation-provider
             v-slot="{ errors }"
-            rules="required|password:@confirm"
+            name="password"
+            rules="required"
           >
             <v-text-field
               v-model="password"
@@ -46,8 +32,17 @@
             >
             </v-text-field>
           </validation-provider>
-          <v-btn class="mr-4" type="submit" :disabled="invalid"> submit </v-btn>
-          <v-btn @click="clear"> clear </v-btn>
+          <v-btn
+            class="mr-4"
+            type="submit"
+            :disabled="invalid"
+            color="primary"
+            :loading="loading"
+            @click="loader = 'loading'"
+          >
+            submit
+          </v-btn>
+          <v-btn color="secondary" outlined @click="clear"> clear </v-btn>
         </form>
       </v-card>
     </v-container>
@@ -85,14 +80,6 @@ extend('min', {
   message: '{_field_} must be at least {length} characters'
 })
 
-extend('password', {
-  params: ['target'],
-  validate(value, { target }) {
-    return value === target
-  },
-  message: 'Password confirmation does not match'
-})
-
 extend('email', {
   ...email,
   message: 'Email must be valid'
@@ -103,20 +90,75 @@ export default {
     ValidationObserver
   },
   data: () => ({
-    name: '',
     email: '',
-    password: ''
+    password: '',
+    loader: null,
+    loading: false
   }),
+  watch: {
+    loader() {
+      const l = this.loader
+      this[l] = !this[l]
 
+      setTimeout(() => (this[l] = false), 3000)
+
+      this.loader = null
+    }
+  },
   methods: {
     submit() {
       this.$refs.observer.validate()
+      const payload = {
+        email: this.email,
+        password: this.password
+      }
+      this.$store.dispatch('login', payload)
+      console.log(payload)
     },
     clear() {
-      this.name = ''
       this.email = ''
+      this.password = ''
       this.$refs.observer.reset()
     }
   }
 }
 </script>
+
+<style>
+.custom-loader {
+  animation: loader 1s infinite;
+  display: flex;
+}
+@-moz-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-o-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+</style>

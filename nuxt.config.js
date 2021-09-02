@@ -36,6 +36,9 @@ export default {
     // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify'
   ],
+  // router: {
+  //   middleware: ['auth']
+  // },
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
@@ -53,8 +56,28 @@ export default {
           appId: '1:534369309882:web:3d28e55aeb266d751c5e83'
         },
         services: {
-          auth: true,
-          functions: true
+          auth: {
+            persistence: 'local', // default
+            initialize: {
+              onAuthStateChangedAction: 'onAuthStateChangedAction',
+              subscribeManually: false
+            },
+            ssr: false // default
+          },
+          firestore: {
+            memoryOnly: false, // default
+            chunkName:
+              process.env.NODE_ENV !== 'production' ? 'firebase-auth' : '[id]', // default
+            enablePersistence: {
+              synchronizeTabs: true
+            },
+            // emulatorPort: 8080,
+            // emulatorHost: 'localhost',
+            settings: {
+              experimentalForceLongPolling: true,
+              merge: true
+            }
+          }
         }
       }
     ]
@@ -90,16 +113,5 @@ export default {
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
-  auth: {
-    persistence: 'local', // default
-    initialize: {
-      onAuthStateChangedMutation: 'ON_AUTH_STATE_CHANGED_MUTATION',
-      onAuthStateChangedAction: 'onAuthStateChangedAction',
-      subscribeManually: false
-    },
-    ssr: false, // default
-    emulatorPort: 9099,
-    emulatorHost: 'http://localhost'
-  }
+  build: {}
 }
