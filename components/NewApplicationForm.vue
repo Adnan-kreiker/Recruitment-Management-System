@@ -14,7 +14,7 @@
         Please fill your application</v-card-title
       >
       <validation-observer ref="observer" v-slot="{ invalid }">
-        <form @submit.prevent="addApplication">
+        <form @submit.prevent="addApplication() + showNotification()">
           <v-row>
             <v-col cols="12" sm="6" class="px-8">
               <validation-provider
@@ -264,7 +264,9 @@ export default {
       })
     }
   },
-
+  unmounted() {
+    clearTimeout()
+  },
   methods: {
     addApplication() {
       const formOutPut = {
@@ -276,6 +278,7 @@ export default {
         file: this.file
       }
       this.$store.commit('addApplicant', formOutPut)
+      this.$router.push('/myapplication')
     },
 
     filter(item, queryText, itemText) {
@@ -297,6 +300,12 @@ export default {
       this.email = ''
       this.checkbox = null
       this.$refs.observer.reset()
+    },
+    showNotification() {
+      this.$store.commit('SHOW_SNACKBAR', 'Your Application has been submitted')
+      setTimeout(() => {
+        this.$store.commit('HIDE_SNACKBAR')
+      }, 4000)
     }
   }
 }

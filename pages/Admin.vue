@@ -152,6 +152,7 @@ export default {
     },
     item: ''
   }),
+
   computed: {
         headers() {
           return [
@@ -189,10 +190,10 @@ export default {
       val || this.closeDelete()
     }
   },
-  created() {
+
+    created() {
     this.$store.dispatch('getApplicants')
   },
-
   methods: {
     editItem(item) {
       this.item = item // this refers to the item we clicked on

@@ -26,6 +26,9 @@ export default {
       currentComponent: 'Login',
       login: true
     }
+  },
+  created() {
+    console.log(this.$fire.auth.currentUser)
   }
 }
 </script>

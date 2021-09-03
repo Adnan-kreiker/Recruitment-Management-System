@@ -58,6 +58,8 @@ export const actions = {
     } else {
       // Do something with the authUser and the claims object...
       const { displayName, email } = authUser
+      console.log(authUser)
+
       state.commit('SET_USER', {
         displayName,
         email
@@ -86,17 +88,18 @@ export const actions = {
       clearTimeout()
     }
   },
-  init_login({ commit }) {
-    const user = this.$fire.auth.currentUser
-    if (user) {
-      const { displayName, email } = this.$fire.auth.currentUser
+  // init_login({ commit }) {
+  //   const user = this.$fire.auth.currentUser
+  //   if (user) {
+  //     const { displayName, email } = this.$fire.auth.currentUser
+  //     console.log(user)
 
-      commit('SET_USER', {
-        displayName,
-        email
-      })
-    }
-  },
+  //     commit('SET_USER', {
+  //       displayName,
+  //       email
+  //     })
+  //   }
+  // },
   async login({ commit }, payload) {
     try {
       await this.$fire.auth.signInWithEmailAndPassword(
@@ -120,18 +123,20 @@ export const actions = {
     }
   },
   async register({ commit }, payload) {
-    const userCred = await this.$fire.auth.createUserWithEmailAndPassword(
-      payload.email,
-      payload.password
-    )
     try {
+      const userCred = await this.$fire.auth.createUserWithEmailAndPassword(
+        payload.email,
+        payload.password
+      )
+
       await this.$fire.firestore
         .collection('users')
         .doc(userCred.user.uid)
         .set({
           name: payload.name,
           email: payload.email,
-          phone: payload.phone
+          phone: payload.phone,
+          isAdmin: false
         })
 
       await userCred.user.updateProfile({

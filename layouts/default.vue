@@ -30,6 +30,9 @@
     <v-app-bar :clipped-left="clipped" fixed app color="primary">
       <v-app-bar-nav-icon class="white--text" @click.stop="drawer = !drawer" />
       <v-toolbar-title class="white--text" v-text="title" />
+      <v-toolbar-title v-if="user" class="white--text pl-4">
+        logged in as {{ user.displayName }}</v-toolbar-title
+      >
       <v-spacer></v-spacer>
       <div v-if="!user">
         <v-btn text to="/auth" color="white">Login / Register</v-btn>
@@ -57,7 +60,7 @@
         absolute
         bottom
         center
-        color="blue"
+        color="#35495E"
         class="white--text"
       >
         {{ snackbarText }}
@@ -90,14 +93,19 @@ export default {
           icon: 'mdi-cog',
           title: 'Dashboard',
           to: '/admin'
+        },
+        {
+          icon: 'mdi-cog',
+          title: 'My Application',
+          to: '/myapplication'
         }
       ],
       miniVariant: false,
-      title: 'Recruitment Management System'
+      title: 'Recruitment MS'
     }
   },
   computed: {
-    ...mapState(['user', 'snackbarText']),
+    ...mapState(['user', 'snackbarText', 'user']),
     snackbar: {
       get() {
         return this.$store.state.snackbar

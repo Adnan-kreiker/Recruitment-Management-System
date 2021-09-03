@@ -5,6 +5,12 @@ export default function ({ app, route, redirect }) {
       // take them to sign in page
       return redirect('/auth')
     }
+  }
+  if (route.path === '/admin') {
+    if (app.$fire.auth.currentUser.displayName !== 'admin') {
+      // leave them on the sign in page
+      return redirect('/auth')
+    }
   } else if (route.path === '/auth') {
     if (!app.$fire.auth.currentUser) {
       // leave them on the sign in page
