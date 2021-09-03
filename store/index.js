@@ -24,7 +24,6 @@ export const mutations = {
     formOutPut.id = state.id
     formOutPut.status = 'Created'
     state.applicants.push(formOutPut)
-    console.log(formOutPut)
   },
   setApplicants: (state, applicants) => {
     // Array.prototype.push.apply(state.applicants, applicants)
@@ -57,8 +56,6 @@ export const actions = {
     } else {
       // Do something with the authUser and the claims object...
       const { displayName, email } = authUser
-      console.log(authUser)
-
       state.commit('SET_USER', {
         displayName,
         email
@@ -71,15 +68,12 @@ export const actions = {
       await fetch('https://fakejsonapi.com/users')
         .then((res) => res.json())
         .then((data) => {
-          console.log('data', data)
           for (let i = 0; i < data.length; i++) {
             data[i].status = 'Created'
           }
           commit('setApplicants', data)
-          console.log('state', state.applicants)
         })
     } catch (error) {
-      console.log(error)
       commit('SHOW_SNACKBAR', error)
       const timeout = setTimeout(() => {
         commit('HIDE_SNACKBAR')
@@ -87,18 +81,6 @@ export const actions = {
       clearTimeout(timeout)
     }
   },
-  // init_login({ commit }) {
-  //   const user = this.$fire.auth.currentUser
-  //   if (user) {
-  //     const { displayName, email } = this.$fire.auth.currentUser
-  //     console.log(user)
-
-  //     commit('SET_USER', {
-  //       displayName,
-  //       email
-  //     })
-  //   }
-  // },
   async login({ commit }, payload) {
     try {
       await this.$fire.auth.signInWithEmailAndPassword(
@@ -113,7 +95,6 @@ export const actions = {
       })
       this.$router.push('/')
     } catch (error) {
-      console.log(error)
       commit('SHOW_SNACKBAR', error)
       const timeout = setTimeout(() => {
         commit('HIDE_SNACKBAR')

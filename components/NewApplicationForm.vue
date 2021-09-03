@@ -1,5 +1,11 @@
 <template>
-  <v-card outlined max-width="700" elevation="12" shaped class="mx-auto pa-8">
+  <v-card
+    outlined
+    max-width="600"
+    elevation="12"
+    shaped
+    class="mx-auto py-8 px-10"
+  >
     <v-card-title
       class="
         pt-4
@@ -10,6 +16,7 @@
         font-weight-medium
         grey--text
         text--darken-1
+        font-weight-bold
       "
     >
       Please fill your application</v-card-title
@@ -17,7 +24,7 @@
     <validation-observer ref="observer" v-slot="{ invalid }">
       <form @submit.prevent="addApplication() + showNotification()">
         <v-row>
-          <v-col cols="12" sm="6" class="px-8">
+          <v-col cols="12" class="px-8">
             <validation-provider
               v-slot="{ errors }"
               name="Name"
@@ -28,12 +35,12 @@
                 :error-messages="errors"
                 label="Name"
                 required
-                solo
                 color="secondary"
+                class="font-weight-bold"
               ></v-text-field>
             </validation-provider>
           </v-col>
-          <v-col cols="12" sm="6" class="px-8">
+          <v-col cols="12" class="px-8">
             <validation-provider
               v-slot="{ errors }"
               name="phoneNumber"
@@ -43,15 +50,15 @@
             >
               <v-text-field
                 v-model="phoneNumber"
-                solo
                 :error-messages="errors"
                 label="Phone Number"
                 required
                 color="secondary"
+                class="font-weight-bold"
               ></v-text-field>
             </validation-provider>
           </v-col>
-          <v-col class="px-8" cols="12" sm="6">
+          <v-col class="px-8" cols="12">
             <validation-provider
               v-slot="{ errors }"
               name="email"
@@ -59,26 +66,28 @@
             >
               <v-text-field
                 v-model="email"
-                solo
                 :error-messages="errors"
                 label="E-mail"
                 required
                 color="secondary"
+                class="font-weight-bold"
               ></v-text-field>
             </validation-provider>
           </v-col>
-          <v-col cols="12" sm="6" class="py-0">
-            <v-card-text class="text-body-1">Choose your specialty</v-card-text>
+          <v-col cols="12" class="py-0">
+            <v-card-text class="text-body-1 font-weight-bold"
+              >Choose your specialty</v-card-text
+            >
             <v-select
               v-model="specialty"
-              class="px-4"
+              class="px-4 font-weight-bold"
               :items="majors"
               label="Your specialty"
               solo
             ></v-select>
           </v-col>
           <v-col cols="12" class="py-0">
-            <v-card-text class="pt-0 text-body-1"
+            <v-card-text class="pt-0 text-body-1 font-weight-bold"
               >Upload your resume</v-card-text
             >
             <v-file-input
@@ -86,12 +95,14 @@
               label="Upload your CV"
               append-icon="mdi-file"
               prepend-icon
-              class="px-4"
+              class="px-4 font-weight-bold"
               solo
             ></v-file-input>
           </v-col>
           <v-col cols="12" class="py-0">
-            <v-card-text class="py-0 text-body-1">Add your skills</v-card-text>
+            <v-card-text class="py-0 text-body-1 font-weight-bold"
+              >Add your skills</v-card-text
+            >
             <v-combobox
               v-model="skills"
               :filter="filter"
@@ -103,7 +114,7 @@
               multiple
               small-chips
               solo
-              class="pa-4"
+              class="pa-4 font-weight-bold"
             >
               <template #no-data>
                 <v-list-item>

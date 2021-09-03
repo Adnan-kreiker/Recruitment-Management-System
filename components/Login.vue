@@ -115,7 +115,6 @@ export default {
         password: this.password
       }
       this.$store.dispatch('login', payload)
-      console.log(payload)
     },
     clear() {
       this.email = ''

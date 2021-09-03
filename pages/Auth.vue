@@ -1,6 +1,6 @@
 <template>
   <main>
-    <div class="d-flex justify-center">
+    <div class="d-flex justify-center mt-4">
       <v-btn
         text
         :class="login ? 'activeBtn' : ''"
@@ -26,9 +26,6 @@ export default {
       currentComponent: 'Login',
       login: true
     }
-  },
-  created() {
-    console.log(this.$fire.auth.currentUser)
   }
 }
 </script>
