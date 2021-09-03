@@ -100,7 +100,7 @@
             ></v-file-input>
           </v-col>
           <v-col cols="12" class="py-0">
-            <v-card-text class="py-0 text-body-1 font-weight-bold"
+            <v-card-text class="text-body-1 font-weight-bold"
               >Add your skills</v-card-text
             >
             <v-combobox
@@ -110,16 +110,16 @@
               :items="items"
               :search-input.sync="search"
               hide-selected
-              label="Search for a skill or add your own"
+              label="Search for an option"
               multiple
-              small-chips
+              chips
               solo
-              class="pa-4 font-weight-bold"
+              class="px-4"
             >
               <template #no-data>
                 <v-list-item>
                   <span class="subheading">Create</span>
-                  <v-chip label small>
+                  <v-chip label>
                     {{ search }}
                   </v-chip>
                 </v-list-item>
@@ -130,8 +130,6 @@
                   v-bind="attrs"
                   :input-value="selected"
                   label
-                  small
-                  class="ma-1"
                 >
                   <span class="pr-2">
                     {{ item.text }}
@@ -152,10 +150,23 @@
                   solo
                   @keyup.enter="edit(index, item)"
                 ></v-text-field>
-                <v-chip v-else dark label small>
+                <v-chip
+                  v-else
+                  :color="`${item.color} lighten-3`"
+                  dark
+                  label
+                  small
+                >
                   {{ item.text }}
                 </v-chip>
                 <v-spacer></v-spacer>
+                <v-list-item-action @click.stop>
+                  <v-btn icon @click.stop.prevent="edit(index, item)">
+                    <v-icon>{{
+                      editing !== item ? 'mdi-pencil' : 'mdi-check'
+                    }}</v-icon>
+                  </v-btn>
+                </v-list-item-action>
               </template>
             </v-combobox>
           </v-col>
@@ -228,19 +239,19 @@ export default {
     items: [
       { header: 'Select an option or create one' },
       {
+        text: 'Nuxt.js'
+      },
+      {
         text: 'Vue.js'
       },
       {
         text: 'HTML'
       },
       {
-        text: 'CSS'
-      },
-      {
         text: 'JavaScript'
       },
       {
-        text: 'Nuxt.js'
+        text: 'CSS'
       }
     ],
     nonce: 1,
@@ -252,14 +263,13 @@ export default {
   }),
 
   watch: {
-    model(val, prev) {
+    skills(val, prev) {
       if (val.length === prev.length) return
 
-      this.model = val.map((v) => {
+      this.skills = val.map((v) => {
         if (typeof v === 'string') {
           v = {
             text: v
-            // color: this.colors[this.nonce - 1],
           }
 
           this.items.push(v)
@@ -287,7 +297,15 @@ export default {
       this.$store.commit('addApplicant', formOutPut)
       this.$router.push('/myapplication')
     },
-
+    edit(index, item) {
+      if (!this.editing) {
+        this.editing = item
+        this.editingIndex = index
+      } else {
+        this.editing = null
+        this.editingIndex = -1
+      }
+    },
     filter(item, queryText, itemText) {
       if (item.header) return false
 
@@ -306,6 +324,7 @@ export default {
       this.phoneNumber = ''
       this.email = ''
       this.checkbox = null
+      this.skills = []
       this.$refs.observer.reset()
     },
     showNotification() {
@@ -317,5 +336,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped></style>

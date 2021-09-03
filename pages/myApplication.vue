@@ -7,6 +7,7 @@
     max-width="374"
   >
     <v-card-title>My Application </v-card-title>
+    <v-divider name="divider" class="mx-4 red--text"></v-divider>
     <v-card-text>
       <p class="my-4 text-subtitle-1">
         <strong> Name : </strong> {{ myApplication.name }}
@@ -22,8 +23,9 @@
         <strong>Email:</strong> {{ myApplication.email }}
       </p>
     </v-card-text>
+    <v-divider name="divider" class="mx-4 red--text"></v-divider>
 
-    <v-card-title class="pt-0">Skills</v-card-title>
+    <v-card-title class="">Skills</v-card-title>
 
     <v-card-text>
       <v-chip-group active-class="deep-purple accent-4 white--text" column>
