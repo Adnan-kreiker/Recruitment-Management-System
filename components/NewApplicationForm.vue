@@ -1,14 +1,13 @@
 <template>
   <v-card
     outlined
-    max-width="600"
+    max-width="500"
     elevation="12"
     shaped
-    class="mx-auto py-8 px-10"
+    class="mx-auto py-8 px-4"
   >
     <v-card-title
       class="
-        pt-4
         pb-8
         px-2
         text-subtitle-1 text-sm-h5
@@ -35,6 +34,7 @@
                 :error-messages="errors"
                 label="Name"
                 required
+                prepend-inner-icon="mdi-account"
                 color="secondary"
                 class="font-weight-bold"
               ></v-text-field>
@@ -52,6 +52,7 @@
                 v-model="phoneNumber"
                 :error-messages="errors"
                 label="Phone Number"
+                prepend-inner-icon="mdi-phone"
                 required
                 color="secondary"
                 class="font-weight-bold"
@@ -69,6 +70,7 @@
                 :error-messages="errors"
                 label="E-mail"
                 required
+                prepend-inner-icon="mdi-email"
                 color="secondary"
                 class="font-weight-bold"
               ></v-text-field>
