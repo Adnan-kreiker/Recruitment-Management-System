@@ -6,8 +6,10 @@
       :clipped="clipped"
       fixed
       app
+      temporary
+      height="100vh"
       color="primary"
-      class="white--text"
+      class="white--text overflow-visible"
     >
       <v-list>
         <v-list-item
@@ -29,8 +31,10 @@
     </v-navigation-drawer>
     <v-app-bar :clipped-left="clipped" fixed app color="primary">
       <v-app-bar-nav-icon class="white--text" @click.stop="drawer = !drawer" />
-      <v-toolbar-title class="white--text" v-text="title" />
-      <v-toolbar-title v-if="user" class="white--text pl-4">
+      <v-toolbar-title
+        v-if="user"
+        class="white--text text-caption text-sm-subtitle-1 pl-4"
+      >
         logged in as {{ user.displayName }}</v-toolbar-title
       >
       <v-spacer></v-spacer>
@@ -38,39 +42,42 @@
         <v-btn text to="/auth" color="white">Login / Register</v-btn>
       </div>
       <v-btn v-else text to="/login" color="white" @click="handleSignOut"
-        >Sign out</v-btn
+        ><v-icon> mdi-logout</v-icon></v-btn
       >
       <v-switch
         text
         color="white"
         rounded
         class="pt-5 mx-2 white--text"
+        app
         :append-icon="
-          $vuetify.theme.dark
-            ? 'mdi-white-balance-sunny'
-            : 'mdi-moon-waxing-crescent'
+          $vuetify.theme.dark ? 'mdi-white-balance-sunny' : 'mdi-weather-night'
         "
         @click="toggleTheme"
-      ></v-switch>
+      >
+      </v-switch>
     </v-app-bar>
     <v-main>
-      <v-snackbar
-        v-model="snackbar"
-        transition="fade-transition"
-        absolute
-        bottom
-        center
-        color="#35495E"
-        class="white--text"
-      >
-        {{ snackbarText }}
-      </v-snackbar>
       <v-container>
+        <v-snackbar
+          v-model="snackbar"
+          transition="fade-transition"
+          absolute
+          bottom
+          center
+          color="#35495E"
+          class="white--text"
+        >
+          {{ snackbarText }}
+        </v-snackbar>
         <Nuxt />
       </v-container>
     </v-main>
-    <v-footer :absolute="!fixed" app color="primary">
-      <span>&copy; {{ new Date().getFullYear() }}</span>
+
+    <v-footer class="justify-center" :absolute="!fixed" app color="primary">
+      <span class="white--text py-2"
+        >&copy; {{ new Date().getFullYear() }} Recruitment Management System
+      </span>
     </v-footer>
   </v-app>
 </template>
@@ -85,23 +92,22 @@ export default {
       fixed: false,
       items: [
         {
-          icon: 'mdi-apps',
+          icon: 'mdi-clipboard-edit-outline',
           title: 'Apply Now',
           to: '/'
         },
         {
-          icon: 'mdi-cog',
+          icon: 'mdi-monitor-dashboard',
           title: 'Dashboard',
           to: '/admin'
         },
         {
-          icon: 'mdi-cog',
+          icon: 'mdi-note-text-outline',
           title: 'My Application',
           to: '/myapplication'
         }
       ],
-      miniVariant: false,
-      title: 'Recruitment MS'
+      miniVariant: false
     }
   },
   computed: {
@@ -125,3 +131,10 @@ export default {
   }
 }
 </script>
+
+<style>
+.mdi-weather-night::before {
+  content: '\F0594';
+  color: white;
+}
+</style>

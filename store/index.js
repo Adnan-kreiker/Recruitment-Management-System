@@ -6,7 +6,6 @@ export const state = () => ({
   user: null,
   snackbar: false,
   snackbarText: ''
-  // timeout: 4000
 })
 
 export const getters = {
@@ -82,10 +81,10 @@ export const actions = {
     } catch (error) {
       console.log(error)
       commit('SHOW_SNACKBAR', error)
-      setTimeout(() => {
+      const timeout = setTimeout(() => {
         commit('HIDE_SNACKBAR')
       }, 4000)
-      clearTimeout()
+      clearTimeout(timeout)
     }
   },
   // init_login({ commit }) {
@@ -116,10 +115,10 @@ export const actions = {
     } catch (error) {
       console.log(error)
       commit('SHOW_SNACKBAR', error)
-      setTimeout(() => {
+      const timeout = setTimeout(() => {
         commit('HIDE_SNACKBAR')
       }, 4000)
-      clearTimeout()
+      clearTimeout(timeout)
     }
   },
   async register({ commit }, payload) {
@@ -152,10 +151,10 @@ export const actions = {
       this.$router.push('/')
     } catch (error) {
       commit('SHOW_SNACKBAR', error)
-      setTimeout(() => {
+      const timeout = setTimeout(() => {
         commit('HIDE_SNACKBAR')
       }, 4000)
-      clearTimeout()
+      clearTimeout(timeout)
     }
   },
   async signout({ commit }) {
@@ -165,10 +164,10 @@ export const actions = {
       this.$router.push('/auth')
     } catch (error) {
       commit('SHOW_SNACKBAR', error)
-      setTimeout(() => {
+      const timeout = setTimeout(() => {
         commit('HIDE_SNACKBAR')
       }, 4000)
-      clearTimeout()
+      clearTimeout(timeout)
     }
   }
 }
