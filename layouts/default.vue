@@ -51,7 +51,7 @@
         class="pt-5 mx-2 white--text"
         app
         :append-icon="
-          $vuetify.theme.dark ? 'mdi-white-balance-sunny' : 'mdi-weather-night'
+          $vuetify.theme.dark ? 'mdi-weather-night' : 'mdi-white-balance-sunny'
         "
         @click="toggleTheme"
       >
@@ -135,6 +135,10 @@ export default {
 <style>
 .mdi-weather-night::before {
   content: '\F0594';
+  color: white;
+}
+.mdi-white-balance-sunny::before {
+  content: '\F05A8';
   color: white;
 }
 </style>
