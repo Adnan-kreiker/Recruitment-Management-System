@@ -288,14 +288,18 @@ export default {
   },
   methods: {
     addApplication() {
+      const uid = this.$fire.auth.currentUser.uid
       const formOutPut = {
         name: this.name,
+        uid,
         email: this.email,
         phone: this.phoneNumber,
         speciality: this.specialty,
         skills: this.skills,
         file: this.file
       }
+      console.log(formOutPut)
+
       this.$store.commit('addApplicant', formOutPut)
       this.$router.push('/myapplication')
     },

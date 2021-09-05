@@ -87,18 +87,19 @@ export const actions = {
         payload.email,
         payload.password
       )
-      const { displayName, email } = this.$fire.auth.currentUser
+      const { displayName, email, uid } = this.$fire.auth.currentUser
 
       commit('SET_USER', {
         displayName,
-        email
+        email,
+        uid
       })
       this.$router.push('/')
     } catch (error) {
       commit('SHOW_SNACKBAR', error)
       const timeout = setTimeout(() => {
         commit('HIDE_SNACKBAR')
-      }, 4000)
+      }, 1000)
       clearTimeout(timeout)
     }
   },

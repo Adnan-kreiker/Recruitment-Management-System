@@ -63,10 +63,9 @@ export default {
   computed: {
     ...mapState(['applicants']),
     myApplication() {
-      // const email = this.$fire.auth.currentUser.email
       // eslint-disable-next-line eqeqeq
-      const email = this.$fire.auth.currentUser.email
-      const myInfo = this.applicants.filter((i) => i.email === email)
+      const uid = this.$fire.auth.currentUser.uid
+      const myInfo = this.applicants.filter((i) => i.uid === uid)
       return myInfo[0]
     }
   }
